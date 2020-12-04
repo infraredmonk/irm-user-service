@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  user-service-db:
+    container_name: irm_user_db
+    image: library/postgres:13.1
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=irm_user_db
+      - POSTGRES_USER=irm_user
+      - POSTGRES_PASSWORD=hermitcrab

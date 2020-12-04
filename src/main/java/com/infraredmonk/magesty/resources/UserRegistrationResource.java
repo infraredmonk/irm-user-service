@@ -1,6 +1,7 @@
 package com.infraredmonk.magesty.resources;
 
 import com.infraredmonk.magesty.api.UserRegistrationRequest;
+import com.infraredmonk.magesty.jdbi3.IrmUserDao;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -15,15 +16,15 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserRegistrationResource {
 
+    IrmUserDao irmUserDao;
+
+    public UserRegistrationResource(IrmUserDao irmUserDao) {
+        this.irmUserDao = irmUserDao;
+    }
+
     @POST
     public Response registerUser(@NotNull UserRegistrationRequest request) {
-        String email = request.getEmail();
-        // check if user with this email already exists
-        if (email.equals("user@infraredmonk.com")) {
-            return Response.status(409)
-                    .entity("User has already been registered with this email.")
-                    .build();
-        }
+        irmUserDao.insertUser(request.getEmail(), request.getFirstName(), request.getLastName());
         // save this user to the database
         return Response.status(200)
                 .entity("User successfully registered.")

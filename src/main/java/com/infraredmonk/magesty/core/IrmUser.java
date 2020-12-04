@@ -12,4 +12,5 @@ public class IrmUser {
     private String email;
     private String firstName;
     private String lastName;
+    private Boolean registrationConfirmed;
 }
