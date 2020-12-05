@@ -11,3 +11,7 @@ services:
       - POSTGRES_DB=irm_user_db
       - POSTGRES_USER=irm_user
       - POSTGRES_PASSWORD=hermitcrab
+    volumes:
+      - type: bind
+        source: ./db/1-schema.sql
+        target: /docker-entrypoint-initdb.d/1-schema.sql

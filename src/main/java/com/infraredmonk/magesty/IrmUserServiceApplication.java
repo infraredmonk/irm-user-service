@@ -5,11 +5,19 @@ import com.infraredmonk.magesty.resources.PingResource;
 import com.infraredmonk.magesty.resources.UserRegistrationResource;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
+import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
+import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 public class IrmUserServiceApplication extends Application<IrmUserServiceConfiguration> {
+
+    @Override
+    public void initialize(Bootstrap<IrmUserServiceConfiguration> bootstrap) {
+        super.initialize(bootstrap);
+        bootstrap.addBundle(new JdbiExceptionsBundle());
+    }
 
     @Override
     public void run(IrmUserServiceConfiguration configuration, Environment environment) {
