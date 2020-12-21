@@ -1,15 +1,11 @@
 package com.infraredmonk.magesty.core;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.joda.time.DateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class IrmUser {
 
     private String email;

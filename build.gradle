@@ -6,12 +6,24 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation 'io.dropwizard:dropwizard-core:2.0.16'
-    implementation 'io.dropwizard:dropwizard-jdbi3:2.0.16'
-    implementation 'org.postgresql:postgresql:42.2.18'
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
+ext {
+    libVersions = [
+            dagger    : "2.30",
+            dropwizard: "2.0.16",
+            logback   : "1.2.3",
+            lombok    : "1.18.16",
+            postgresql: "42.2.18"
+    ]
+}
 
-    compileOnly 'org.projectlombok:lombok:1.18.16'
-    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+dependencies {
+    implementation "io.dropwizard:dropwizard-core:${libVersions.dropwizard}"
+    implementation "io.dropwizard:dropwizard-jdbi3:${libVersions.dropwizard}"
+    implementation "org.postgresql:postgresql:${libVersions.postgresql}"
+    implementation "ch.qos.logback:logback-classic:${libVersions.logback}"
+    implementation "com.google.dagger:dagger:${libVersions.dagger}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${libVersions.dagger}"
+
+    compileOnly "org.projectlombok:lombok:${libVersions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${libVersions.lombok}"
 }

@@ -1,15 +1,13 @@
 package com.infraredmonk.magesty;
 
-import com.infraredmonk.magesty.jdbi3.IrmUserDao;
+import com.infraredmonk.magesty.di.AppComponent;
+import com.infraredmonk.magesty.di.DaggerAppComponent;
+import com.infraredmonk.magesty.di.module.DatabaseModule;
 import com.infraredmonk.magesty.resources.PingResource;
-import com.infraredmonk.magesty.resources.UserRegistrationResource;
 import io.dropwizard.Application;
-import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 public class IrmUserServiceApplication extends Application<IrmUserServiceConfiguration> {
 
@@ -21,15 +19,18 @@ public class IrmUserServiceApplication extends Application<IrmUserServiceConfigu
 
     @Override
     public void run(IrmUserServiceConfiguration configuration, Environment environment) {
-        final JdbiFactory jdbiFactory = new JdbiFactory();
-        final Jdbi jdbi = jdbiFactory
-                .build(environment, configuration.getDatabase(), "postgresql")
-                .installPlugin(new SqlObjectPlugin());
-        environment.jersey().register(new UserRegistrationResource(jdbi.onDemand(IrmUserDao.class)));
+        AppComponent component = DaggerAppComponent.builder()
+                .databaseModule(new DatabaseModule(environment, configuration))
+                .build();
+        environment.jersey().register(component.getUserResource());
         environment.jersey().register(PingResource.class);
     }
 
     public static void main(String[] args) throws Exception {
-        new IrmUserServiceApplication().run(args);
+        if (args.length > 0) {
+            new IrmUserServiceApplication().run(args);
+        } else {
+            new IrmUserServiceApplication().run("server", "deployment/envs/local/application.yaml");
+        }
     }
 }
