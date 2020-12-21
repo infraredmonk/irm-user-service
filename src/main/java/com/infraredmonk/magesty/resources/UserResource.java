@@ -55,10 +55,13 @@ public class UserResource {
     @Path("/{email}")
     public Response getUserByEmail(@NotNull @PathParam("email") String email) {
         List<IrmUser> usersByEmail = irmUserDao.findUserByEmail(email);
-        if (usersByEmail.size() == 1) {
-            return Response.status(200).entity(usersByEmail).build();
-        } else {
+        int userCount = usersByEmail.size();
+        if (userCount == 1) {
+            return Response.status(200).entity(usersByEmail.get(0)).build();
+        } else if (userCount == 0){
             return Response.status(404).entity("User with email '" + email + "' does not exist!").build();
+        } else {
+            throw new RuntimeException("Numbers of users by email '" + email + "' is " + userCount);
         }
     }
 

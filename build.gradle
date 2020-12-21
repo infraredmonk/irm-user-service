@@ -8,11 +8,13 @@ repositories {
 
 ext {
     libVersions = [
-            dagger    : "2.30",
-            dropwizard: "2.0.16",
-            logback   : "1.2.3",
-            lombok    : "1.18.16",
-            postgresql: "42.2.18"
+            dagger    : '2.30',
+            dropwizard: '2.0.16',
+            junit5    : '5.7.0',
+            logback   : '1.2.3',
+            lombok    : '1.18.16',
+            mockito   : '3.6.28',
+            postgresql: '42.2.18'
     ]
 }
 
@@ -26,4 +28,13 @@ dependencies {
 
     compileOnly "org.projectlombok:lombok:${libVersions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${libVersions.lombok}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${libVersions.junit5}"
+    testImplementation "org.mockito:mockito-core:${libVersions.mockito}"
+    testImplementation "io.dropwizard:dropwizard-testing:${libVersions.dropwizard}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${libVersions.junit5}"
+}
+
+test {
+    useJUnitPlatform()
 }
