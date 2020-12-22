@@ -13,5 +13,5 @@ services:
       - POSTGRES_PASSWORD=hermitcrab
     volumes:
       - type: bind
-        source: ./db/1-schema.sql
+        source: ./deploy/local/db/1-schema.sql
         target: /docker-entrypoint-initdb.d/1-schema.sql

@@ -21,6 +21,7 @@ ext {
 dependencies {
     implementation "io.dropwizard:dropwizard-core:${libVersions.dropwizard}"
     implementation "io.dropwizard:dropwizard-jdbi3:${libVersions.dropwizard}"
+    implementation "io.dropwizard:dropwizard-auth:${libVersions.dropwizard}"
     implementation "org.postgresql:postgresql:${libVersions.postgresql}"
     implementation "ch.qos.logback:logback-classic:${libVersions.logback}"
     implementation "com.google.dagger:dagger:${libVersions.dagger}"

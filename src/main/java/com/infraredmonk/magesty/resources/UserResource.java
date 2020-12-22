@@ -2,9 +2,11 @@ package com.infraredmonk.magesty.resources;
 
 import com.infraredmonk.magesty.core.IrmUser;
 import com.infraredmonk.magesty.jdbi3.IrmUserDao;
+import com.infraredmonk.magesty.auth.ServiceRoles;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -33,6 +35,7 @@ public class UserResource {
 
     @POST
     @Path("/register")
+    @RolesAllowed({ServiceRoles.GUEST, ServiceRoles.ADMIN})
     public Response registerUser(@NotNull IrmUser irmUser) {
         try {
             irmUserDao.insertUser(irmUser);
@@ -53,12 +56,13 @@ public class UserResource {
 
     @GET
     @Path("/{email}")
+    @RolesAllowed({ServiceRoles.GUEST, ServiceRoles.CLIENT, ServiceRoles.ADMIN})
     public Response getUserByEmail(@NotNull @PathParam("email") String email) {
         List<IrmUser> usersByEmail = irmUserDao.findUserByEmail(email);
         int userCount = usersByEmail.size();
         if (userCount == 1) {
             return Response.status(200).entity(usersByEmail.get(0)).build();
-        } else if (userCount == 0){
+        } else if (userCount == 0) {
             return Response.status(404).entity("User with email '" + email + "' does not exist!").build();
         } else {
             throw new RuntimeException("Numbers of users by email '" + email + "' is " + userCount);
@@ -66,6 +70,7 @@ public class UserResource {
     }
 
     @GET
+    @RolesAllowed({ServiceRoles.ADMIN})
     public Response getUsers(
             @DefaultValue("100") @QueryParam("limit") Integer limit,
             @DefaultValue("0") @QueryParam("offset") Integer offset) {
