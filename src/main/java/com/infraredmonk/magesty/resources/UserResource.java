@@ -6,6 +6,7 @@ import com.infraredmonk.magesty.auth.ServiceRoles;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -33,10 +34,22 @@ public class UserResource {
         this.irmUserDao = irmUserDao;
     }
 
+    @GET
+    @RolesAllowed({ServiceRoles.ADMIN})
+    public Response getUsers(
+            @DefaultValue("100") @QueryParam("limit") Integer limit,
+            @DefaultValue("0") @QueryParam("offset") Integer offset) {
+        List<IrmUser> allUsers = irmUserDao.listAllUsers(limit, offset);
+        if (allUsers.size() > 0) {
+            return Response.status(200).entity(allUsers).build();
+        } else {
+            return Response.status(404).entity("No users were found!").build();
+        }
+    }
+
     @POST
-    @Path("/register")
-    @RolesAllowed({ServiceRoles.GUEST, ServiceRoles.ADMIN})
-    public Response registerUser(@NotNull IrmUser irmUser) {
+    @RolesAllowed({ServiceRoles.ADMIN})
+    public Response createUser(@NotNull IrmUser irmUser) {
         try {
             irmUserDao.insertUser(irmUser);
             return Response.status(200).entity("User successfully registered.").build();
@@ -56,7 +69,7 @@ public class UserResource {
 
     @GET
     @Path("/{email}")
-    @RolesAllowed({ServiceRoles.GUEST, ServiceRoles.CLIENT, ServiceRoles.ADMIN})
+    @PermitAll
     public Response getUserByEmail(@NotNull @PathParam("email") String email) {
         List<IrmUser> usersByEmail = irmUserDao.findUserByEmail(email);
         int userCount = usersByEmail.size();
@@ -66,19 +79,6 @@ public class UserResource {
             return Response.status(404).entity("User with email '" + email + "' does not exist!").build();
         } else {
             throw new RuntimeException("Numbers of users by email '" + email + "' is " + userCount);
-        }
-    }
-
-    @GET
-    @RolesAllowed({ServiceRoles.ADMIN})
-    public Response getUsers(
-            @DefaultValue("100") @QueryParam("limit") Integer limit,
-            @DefaultValue("0") @QueryParam("offset") Integer offset) {
-        List<IrmUser> allUsers = irmUserDao.listAllUsers(limit, offset);
-        if (allUsers.size() > 0) {
-            return Response.status(200).entity(allUsers).build();
-        } else {
-            return Response.status(404).entity("No users were found!").build();
         }
     }
 }

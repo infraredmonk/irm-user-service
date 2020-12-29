@@ -2,6 +2,9 @@ server:
   applicationConnectors:
     - type: http
       port: 12090
+  adminConnectors:
+    - type: http
+      port: 12091
 
 database:
   driverClass: org.postgresql.Driver
@@ -20,12 +23,9 @@ database:
 
 authConfig:
   authUsers:
-    - name: "admin"
-      role: "svc-admin"
-      password: "wdx908okp2"
-    - name: "client"
-      role: "svc-client"
-      password: "test123"
-    - name: "guest"
-      role: "svc-guest"
-      password: "test"
+    - name: admin
+      role: svc-admin
+      password: wdx908okp2
+    - name: client
+      role: svc-client
+      password: test123

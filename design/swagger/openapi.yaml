@@ -1,0 +1,125 @@
+openapi: 3.0.1
+info:
+  title: Magesty User Service
+  description: 'This a user service API.'
+  contact:
+    email: infraredmonk@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about this project
+  url: https://github.com/infraredmonk/irm-user-service
+servers:
+- url: http://localhost:12090
+tags:
+- name: user
+  description: Operations about user
+  externalDocs:
+    description: Find out more about our store
+    url: http://swagger.io
+paths:
+  /v1/users:
+    post:
+      tags:
+      - user
+      summary: Register new user
+      description: API to register a new user. This can be done by guest or admin users.
+      operationId: createUser
+      requestBody:
+        description: Register user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: User successfully registered.
+        409:
+          description: User is already registered.
+    get:
+      tags:
+      - user
+      summary: Get all users
+      description: API to get all users. This can only be done by admin users.
+      operationId: getUsers
+      parameters:
+      - name: limit
+        in: query
+        description: 'Maximum number of records to fetch. Defaults to 100.'
+        required: false
+        schema:
+          type: integer
+      - name: offset
+        in: query
+        description: 'Start from record number. Defaults to 0.'
+        required: false
+        schema:
+          type: integer
+      responses:
+        200:
+          description: 'List all users'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserArray'
+  /v1/users/{email}:
+    get:
+      tags:
+      - user
+      summary: Get user by email
+      operationId: getUserByEmail
+      parameters:
+      - name: email
+        in: path
+        description: 'Email of the user to be fetched.'
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: Invalid username supplied
+          content: {}
+        404:
+          description: User not found
+          content: {}
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+      xml:
+        name: User
+    UserResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        registrationConfirmed:
+          type: boolean
+        registrationTime:
+          type: number
+    UserArray:
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/UserResponse'
+      

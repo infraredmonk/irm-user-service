@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class ServiceAuthenticator implements Authenticator<BasicCredentials, ServiceTokenPrincipal> {
 
-    private static final Set<String> validRoles = Set.of(ServiceRoles.GUEST, ServiceRoles.CLIENT, ServiceRoles.ADMIN);
+    private static final Set<String> validRoles = Set.of(ServiceRoles.CLIENT, ServiceRoles.ADMIN);
 
     private final IrmAuthConfig authConfig;
 
