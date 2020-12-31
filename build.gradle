@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'application'
 }
 
 repositories {
@@ -10,6 +10,7 @@ ext {
     libVersions = [
             dagger    : '2.30',
             dropwizard: '2.0.16',
+            jbcrypt   : '0.4',
             junit5    : '5.7.0',
             logback   : '1.2.3',
             lombok    : '1.18.16',
@@ -23,6 +24,7 @@ dependencies {
     implementation "io.dropwizard:dropwizard-jdbi3:${libVersions.dropwizard}"
     implementation "io.dropwizard:dropwizard-auth:${libVersions.dropwizard}"
     implementation "org.postgresql:postgresql:${libVersions.postgresql}"
+    implementation "org.mindrot:jbcrypt:${libVersions.jbcrypt}"
     implementation "ch.qos.logback:logback-classic:${libVersions.logback}"
     implementation "com.google.dagger:dagger:${libVersions.dagger}"
     annotationProcessor "com.google.dagger:dagger-compiler:${libVersions.dagger}"
@@ -39,3 +41,5 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+mainClassName = 'com.infraredmonk.magesty.IrmUserServiceApplication'

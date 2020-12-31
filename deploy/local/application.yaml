@@ -25,7 +25,7 @@ authConfig:
   authUsers:
     - name: admin
       role: svc-admin
-      password: wdx908okp2
+      password: $2a$10$.fRo06ubdfJ/ZMFt96bXDuDJC9w1W4mv7X/rAB/hssWf9dNLQQb6u
     - name: client
       role: svc-client
-      password: test123
+      password: $2a$10$TmAOQGuuV5tPSRrOZmt.R.fctI2g5DTey3u780xAXFhABXHCTmWTW

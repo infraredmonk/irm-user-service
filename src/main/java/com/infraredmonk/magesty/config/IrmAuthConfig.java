@@ -1,6 +1,7 @@
 package com.infraredmonk.magesty.config;
 
 import lombok.Data;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Optional;
 import java.util.Set;
@@ -12,7 +13,7 @@ public class IrmAuthConfig {
 
     public Optional<IrmAuthUser> findUserByCredentials(String username, String password) {
         return authUsers.stream()
-                .filter(u -> u.getName().equals(username) && u.getPassword().equals(password))
+                .filter(u -> u.getName().equals(username) && BCrypt.checkpw(password, u.getPassword()))
                 .findFirst();
     }
 }
