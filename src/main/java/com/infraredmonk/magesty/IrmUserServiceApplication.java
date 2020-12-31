@@ -40,7 +40,6 @@ public class IrmUserServiceApplication extends Application<IrmUserServiceConfigu
         environment.jersey().register(RolesAllowedDynamicFeature.class);
         environment.jersey().register(component.getUserResource());
         environment.jersey().register(PingResource.class);
-        new ServiceTokenPrincipal("test", null);
     }
 
     public static void main(String[] args) throws Exception {
